@@ -19,6 +19,11 @@ void Timer::PushTimerJob(SyncExecutablePtr owner, const TimerTask& task, uint32_
 	//TODO: mTimerJobQueue에 TimerJobElement를 push..
 
 	//mTimerJobQueue.push()
+
+	///# 이렇게.. 코드의 전체 맥락을 더 이해한 후에 접근해야함.. todo 위주로만 보면 틀리거나 구현 자체가 어려움.
+
+	int64_t dueTimeTick = after + LTickCount;
+	mTimerJobQueue.push(TimerJobElement(owner, task, dueTimeTick));
 	
 }
 

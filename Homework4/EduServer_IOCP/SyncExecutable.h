@@ -18,6 +18,10 @@ public:
 		static_assert(true == std::is_convertible<T, SyncExecutable>::value, "T should be derived from SyncExecutable");
 
 		//TODO: mLock으로 보호한 상태에서, memfunc를 실행하고 결과값 R을 리턴
+
+		///# 템플릿 공부 좀 해야겠네? 아래처럼.. 보다시피 알고보면 초간단..
+		FastSpinlockGuard lockGuard(mLock);
+		return (static_cast<T*>(this)->*memfunc)(args...);
 	
 	}
 	
@@ -53,5 +57,8 @@ void DoSyncAfter(uint32_t after, T instance, F memfunc, Args&&... args)
 
 	//TODO: instance의 memfunc를 bind로 묶어서 LTimer->PushTimerJob() 수행
 
+	///# 이렇게.. bind와 function객체에 대한 이해가 더 필요함.
+	auto bind = std::bind(memfunc, instance, std::forward<Args>(args)...);
+	LTimer->PushTimerJob(std::static_pointer_cast<SyncExecutable>(instance), bind, after);
 	
 }

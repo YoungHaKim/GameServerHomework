@@ -82,13 +82,13 @@ void FastSpinlock::EnterReadLock()
 		// so we fail to obtain the lock
 		// if this value tested with logical and with write mask 
 		
-		if ( (InterlockedAdd(&mLockFlag, 1) & LF_WRITE_MASK) == 0 )  // no write lock
+		if ( (InterlockedAdd(&mLockFlag, 1) & LF_WRITE_MASK) == 0 )  // no write lock ///# InterlockedIncrement(&mLockFlag)이거 쓰면 편하지롱
 		{
 			return;
 		}
 		else
 		{
-			InterlockedAdd(&mLockFlag, -1);
+			InterlockedAdd(&mLockFlag, -1); ///# InterlockedDecrement(&mLockFlag);
 		}
 
 		
@@ -102,7 +102,7 @@ void FastSpinlock::LeaveReadLock()
 {
 	//DONE
 	//TODO: mLockFlag 처리 
-	InterlockedAdd(&mLockFlag, -1);
+	InterlockedAdd(&mLockFlag, -1); ///# InterlockedDecrement(&mLockFlag);
 
 	if (mLockOrder != LO_DONT_CARE)
 		LLockOrderChecker->Pop(this);

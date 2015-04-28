@@ -34,7 +34,7 @@ int PlayerManager::GetCurrentPlayers(PlayerList& outList)
 	
 	int total = 0;
 
-	for (auto it = mPlayerMap.begin(); it != mPlayerMap.end(); it++)
+	for (auto it = mPlayerMap.begin(); it != mPlayerMap.end(); it++) ///# ++it로 바꿔라 그 이유는 임시객체 복사생성되기 때문
 	{
 		++total;
 		outList.emplace_back(it->second);

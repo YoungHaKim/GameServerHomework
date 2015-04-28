@@ -41,9 +41,13 @@ public:
 					// mRemainTaskCount가 0이면 break;
 					task();
 
-					InterlockedDecrement64(&mRemainTaskCount);
+					//InterlockedDecrement64(&mRemainTaskCount);
 
-					if (mRemainTaskCount == 0) break;
+					//if (mRemainTaskCount == 0) break;
+					
+					///# 이렇게 깔끔하게..
+					if (0 == InterlockedDecrement64(&mRemainTaskCount))
+						break;
 				}
 			}
 		}
@@ -68,14 +72,18 @@ void GCEDispatch(T instance, F memfunc, Args&&... args)
 	static_assert(true == is_shared_ptr<T>::value, "T should be shared_ptr");
 
 	
-	GrandCentralExecuter::GCETask* task = 
+	///# 이렇게 간단하게 된다. bind가 곧 task(std::function이다)
+	auto bind = std::bind(memfunc, instance, std::forward<Args>(args)...);
+	GGrandCentralExecuter->DoDispatch(bind);
+
+	/*GrandCentralExecuter::GCETask* task = 
 		new GrandCentralExecuter::GCETask(
 		std::bind(memfunc, instance.get(), std::forward<Args>(args)...)
 		);
 
 	
 	GGrandCentralExecuter->DoDispatch(task);
-
+	*/
 	//TODO: intance의 memfunc를 std::bind로 묶어서 전달
 	//auto myTask = std::bind(&memfunc, std::forward<Args>(args)...);
 
