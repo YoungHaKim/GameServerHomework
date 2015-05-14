@@ -35,7 +35,28 @@ void MakeDump(EXCEPTION_POINTERS* e)
 	exceptionInfo.ExceptionPointers = e;
 	exceptionInfo.ClientPointers = FALSE;
 
-	//todo: MiniDumpWriteDump를 사용하여 hFile에 덤프 기록
+	//done: MiniDumpWriteDump를 사용하여 hFile에 덤프 기록
+	/*
+	Writes user-mode minidump information to the specified file.
+
+	BOOL WINAPI MiniDumpWriteDump(
+	_In_ HANDLE                            hProcess,
+	_In_ DWORD                             ProcessId,
+	_In_ HANDLE                            hFile,
+	_In_ MINIDUMP_TYPE                     DumpType,
+	_In_ PMINIDUMP_EXCEPTION_INFORMATION   ExceptionParam,
+	_In_ PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
+	_In_ PMINIDUMP_CALLBACK_INFORMATION    CallbackParam
+	);
+	*/
+	MiniDumpWriteDump(
+		GetCurrentProcess(),		//PROCESS_ALL_ACCESS obtained
+		GetCurrentProcessId(),
+		hFile,
+		MiniDumpNormal,
+		nullptr,
+		nullptr,
+		nullptr);
 
 	
 	if (hFile)
@@ -102,8 +123,10 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* exceptionInfo)
 	/// 콜스택도 남기고
 	historyOut << "========== Exception Call Stack ==========" << std::endl << std::endl;
 
-	//todo: StackWalker를 사용하여 historyOut에 현재 스레드의 콜스택 정보 남기기
-
+	//done: StackWalker를 사용하여 historyOut에 현재 스레드의 콜스택 정보 남기기
+	StackWalker stackWalker;
+	stackWalker.SetOutputStream(&historyOut);
+	stackWalker.ShowCallstack();
 	
 	/// 이벤트 로그 남기고
 	LoggerUtil::EventLogDumpOut(historyOut);
