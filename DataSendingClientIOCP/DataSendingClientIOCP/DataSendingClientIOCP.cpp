@@ -13,8 +13,8 @@
 // end the program
 
 #define IP "127.0.0.1"
-#define PORT 9001
-#define SECONDS_TO_SEND 20
+#define PORT 9990
+#define SECONDS_TO_SEND 2
 #define NUMBER_OF_SESSIONS 10
 #define FREQUENCY_OF_DATA_SENDS_PER_SECOND 5  // set this to a number greater than or equal to 1
 
