@@ -48,7 +48,15 @@ void Player::ResponseLoad(int pid, float x, float y, float z, bool valid, wchar_
 
 void Player::RequestUpdatePosition(float x, float y, float z)
 {
-	//todo: DB에 플레이어 위치를 x,y,z로 업데이트 요청하기
+	//done: DB에 플레이어 위치를 x,y,z로 업데이트 요청하기
+
+	UpdatePlayerPositionContext* context = new UpdatePlayerPositionContext(mSession, mPlayerId);
+	context->mPosX = x;
+	context->mPosY = y;
+	context->mPosZ = z;
+
+	GDatabaseManager->PostDatabsaseRequest(context);
+	
 }
 
 void Player::ResponseUpdatePosition(float x, float y, float z)

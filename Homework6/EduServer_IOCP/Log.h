@@ -33,12 +33,13 @@ private:
 
 #define TRACE_THIS	\
 	__if_exists (this)	\
-	{	\
-		LRecentThisPointer = (void*)this;	\
-	}	\
-	if (LThreadType != THREAD_MAIN)	\
-	{	\
-		/*todo: 스레드로컬에 함수 호출(__FUNCSIG__) 기록남기기*/ \
+{	\
+	LRecentThisPointer = (void*)this;	\
+}	\
+if (LThreadType != THREAD_MAIN)	\
+{	\
+	LThreadCallHistory->Append(__FUNCSIG__); \
+	/*done: 스레드로컬에 함수 호출(__FUNCSIG__) 기록남기기*/\
 	}	
 	
 

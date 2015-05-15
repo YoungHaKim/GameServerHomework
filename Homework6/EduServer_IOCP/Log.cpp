@@ -61,10 +61,11 @@ namespace LoggerUtil
 	void EventLogDumpOut(std::ostream& ost)
 	{
 		//done: gLogEvents내용 ost 스트림에 쓰기
-		// 엑셀, matlab 분석 가능하도록 csv 형식으로 
 		uint64_t count = gCurrentLogIndex < MAX_LOG_SIZE ? gCurrentLogIndex : MAX_LOG_SIZE;
 		
 		ost << "Logs,*****" << std::endl;
+
+		// 엑셀, matlab 분석 가능하도록 csv 형식으로 
 		ost << "microstamp, threadID, info, logMsg" << std::endl;
 
 		for (uint64_t i = 1; i <= count; ++i)

@@ -9,6 +9,7 @@
 #include "ClientSessionManager.h"
 #include "IocpManager.h"
 #include "DBManager.h"
+#include "Log.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -22,7 +23,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	GIocpManager = new IocpManager;
 	GDatabaseManager = new DBManager;
 
-	
+	LoggerUtil::InitializeTime();
 
 	if (false == GIocpManager->Initialize())
 		return -1;
