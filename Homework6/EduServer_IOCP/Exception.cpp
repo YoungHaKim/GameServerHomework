@@ -78,16 +78,44 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* exceptionInfo)
 	DWORD myThreadId = GetCurrentThreadId();
 	DWORD myProcessId = GetCurrentProcessId();
 
-	HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+	HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);  //The process identifier of the process to be included in the snapshot. This parameter can be zero to indicate the current process.
+	/*
+	CreateToolhelp32Snapshot function
+	Takes a snapshot of the specified processes, as well as the heaps, modules, and threads used by these processes.
+
+	TH32CS_SNAPTHREAD
+	0x00000004
+	Includes all threads in the system in the snapshot. To enumerate the threads, see Thread32First.
+	To identify the threads that belong to a specific process, compare its process identifier to the th32OwnerProcessID member of the THREADENTRY32 structure when enumerating the threads.
+	*/
+
+
 	if (hThreadSnap != INVALID_HANDLE_VALUE)
 	{
 		te32.dwSize = sizeof(THREADENTRY32);
 
-		if (Thread32First(hThreadSnap, &te32))
+		/*
+		//Retrieves information about the first thread of any process encountered in a system snapshot.
+
+		BOOL WINAPI Thread32First(		
+		_In_    HANDLE          hSnapshot,		//A handle to the snapshot returned from a previous call to the CreateToolhelp32Snapshot function.
+		_Inout_ LPTHREADENTRY32 lpte		//A pointer to a THREADENTRY32 structure.
+		);
+		*/
+
+		if (Thread32First(hThreadSnap, &te32))		
 		{
 			do
 			{
-				//todo: 내 프로세스 내의 스레드중 나 자신 스레드만 빼고 멈추게..
+				//done: 내 프로세스 내의 스레드중 나 자신 스레드만 빼고 멈추게..
+
+				// thread belongs to my process and is not the main thread
+				if (te32.th32OwnerProcessID == myProcessId && te32.th32ThreadID != myThreadId)
+				{
+					SuspendThread(
+						OpenThread(THREAD_ALL_ACCESS, FALSE, te32.th32ThreadID)
+						);
+				}
 				
 
 			} while (Thread32Next(hThreadSnap, &te32));

@@ -21,6 +21,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	GClientSessionManager = new ClientSessionManager;
 	GIocpManager = new IocpManager;
 	GDatabaseManager = new DBManager;
+
 	
 
 	if (false == GIocpManager->Initialize())
