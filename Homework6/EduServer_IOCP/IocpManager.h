@@ -27,7 +27,7 @@ public:
 
 	void PostDatabaseResult(DatabaseJobContext* dbContext);
 
-	HANDLE GetComletionPort()	{ return mCompletionPort; }
+	HANDLE GetCompletionPort()	{ return mCompletionPort; }
 
 	SOCKET* GetListenSocket()  { return &mListenSocket;  }
 

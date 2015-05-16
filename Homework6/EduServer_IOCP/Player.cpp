@@ -96,12 +96,36 @@ void Player::ResponseUpdateValidation(bool isValid)
 
 void Player::TestCreatePlayerData(const wchar_t* newName)
 {
-	//todo: DB스레드풀에 newName에 해당하는 플레이어 생성 작업을 수행시켜보기
+	//done: DB스레드풀에 newName에 해당하는 플레이어 생성 작업을 수행시켜보기
+	CreatePlayerDataContext* context = new CreatePlayerDataContext(mSession, newName);
+	GDatabaseManager->PostDatabsaseRequest(context);
 
 }
 
 void Player::TestDeletePlayerData(int playerId)
 {
-	//todo: DB스레드풀에 playerId에 해당하는 플레이어 생성 삭제 작업을 수행시켜보기
+	//done: DB스레드풀에 playerId에 해당하는 플레이어 생성 삭제 작업을 수행시켜보기
+	DeletePlayerDataContext* context = new DeletePlayerDataContext(mSession, playerId);
+	GDatabaseManager->PostDatabsaseRequest(context);
+}
+
+void Player::ResponseCreated(int playerID, wchar_t* playerName)
+{
+	FastSpinlockGuard criticalSection(mPlayerLock);
+
+	mPlayerId = playerID;
+	wcscpy_s(mPlayerName, wcslen(playerName), playerName);
+}
+
+void Player::ResponseDeleted(int playerID, int numRowsDeleted)
+{
+	FastSpinlockGuard criticalSection(mPlayerLock);
+
+	// what to do if player is deleted?
+	// self destruct player object perhaps?
+	// Reset player for now I guess
+	PlayerReset();
+	
+	
 }
 

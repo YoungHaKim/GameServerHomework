@@ -83,6 +83,13 @@ unsigned int WINAPI DBManager::DbWorkerThread(LPVOID lpParam)
 
 void DBManager::PostDatabsaseRequest(DatabaseJobContext* dbContext)
 {
-	//todo: PQCS를 이용하여 dbContext를 mDbCompletionPort에 보내기
+	//done: PQCS를 이용하여 dbContext를 mDbCompletionPort에 보내기
+	ULONG_PTR completionKey = CK_DB_REQUEST;
+
+	if (FALSE == PostQueuedCompletionStatus(mDbCompletionPort, sizeof(DatabaseJobContext), completionKey, (LPOVERLAPPED)dbContext))
+	{
+		printf_s("Error in posting DB job to iocp queue: %d \n", GetLastError());
+	}
+
 
 }

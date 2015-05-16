@@ -40,7 +40,20 @@ void DBThread::DoDatabaseJob()
 
 	
 	DatabaseJobContext* dbContext = reinterpret_cast<DatabaseJobContext*>(overlapped);
-	//todo: dbContext의 SQL을 실행하고 그 결과를 IO thread풀로 보내기
+
+	//done: dbContext의 SQL을 실행하고 그 결과를 IO thread풀로 보내기		
+	if (!dbContext->SQLExecute())
+	{
+		dbContext->OnFail();
+		printf_s("Failed to execute DB job. \n");
+		return;
+	}
+
+	if (FALSE == PostQueuedCompletionStatus(GIocpManager->GetCompletionPort(), dwTransferred, completionKey, (LPOVERLAPPED)dbContext))
+	{
+		printf_s("Error in posting DB job result to Queue: %d \n", GetLastError());
+		return;
+	}
 
 }
 

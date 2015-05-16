@@ -23,6 +23,9 @@ public:
 	void RequestUpdateValidation(bool isValid);
 	void ResponseUpdateValidation(bool isValid);
 
+	void ResponseCreated(int playerID, wchar_t* playerName);
+	void ResponseDeleted(int playerID, int numRowsDeleted);
+
 private:
 
 	void PlayerReset();

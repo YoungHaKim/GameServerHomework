@@ -57,7 +57,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		Sleep(1000 / FREQUENCY_OF_DATA_SENDS_PER_SECOND);
 	}
 	
-	
+	printf_s("Hit Enter to Close connections \n");
+	getchar();
+
 	// show stats after 60 seconds
 	
 	g_IoManager->PrintStats();
