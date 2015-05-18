@@ -53,7 +53,7 @@ void MakeDump(EXCEPTION_POINTERS* e)
 		GetCurrentProcess(),		//PROCESS_ALL_ACCESS obtained
 		GetCurrentProcessId(),
 		hFile,
-		MiniDumpNormal,
+		MiniDumpNormal, ///# MINIDUMP_TYPE(MiniDumpWithFullMemory), 보통 풀메모리 남기면 좋다.
 		nullptr,
 		nullptr,
 		nullptr);
@@ -114,9 +114,8 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* exceptionInfo)
 				{
 					SuspendThread(
 						OpenThread(THREAD_ALL_ACCESS, FALSE, te32.th32ThreadID)
-						);
+						); ///# 위험하다, OpenThread가 제대로 되었는지 반드시 확인하고 처리.
 				}
-				
 
 			} while (Thread32Next(hThreadSnap, &te32));
 

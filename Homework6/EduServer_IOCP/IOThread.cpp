@@ -47,7 +47,9 @@ void IOThread::DoIocpJob()
 		//done: DB 처리 결과가 담겨오는 경우 처리
 		DatabaseJobContext* dbContext = reinterpret_cast<DatabaseJobContext*>(overlapped);
 
-		dbContext->OnSuccess();
+		///# dbContext->OnSuccess(); 이게 아니라 아래처럼 Fail/Success 모두 처리
+		dbContext->OnResult();
+
 		
 		delete dbContext;
 		dbContext = nullptr;

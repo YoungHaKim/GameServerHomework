@@ -151,7 +151,7 @@ namespace LoggerUtil
 		
 		gLogEvents[index].mMessage = msg;
 		gLogEvents[index].mAdditionalInfo = info;
-		gLogEvents[index].mThreadId = GetCurrentThreadId();
+		gLogEvents[index].mThreadId = GetCurrentThreadId(); ///# LWorkerThreadId; 내가 지정한 스레드 번호 남기는게 목표
 
 		LARGE_INTEGER endQPC, elapsedMicros;
 		QueryPerformanceCounter(&endQPC);

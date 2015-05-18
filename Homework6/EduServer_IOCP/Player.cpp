@@ -124,6 +124,9 @@ void Player::ResponseDeleted(int playerID, int numRowsDeleted)
 	// what to do if player is deleted?
 	// self destruct player object perhaps?
 	// Reset player for now I guess
+	
+	///# 아래처럼 하는건 아니고, 원래 운영툴 같은데로 통보해주는게 정상, 이 과제에서는 성공 여부만 프린트해줘도 OK
+
 	PlayerReset();
 	
 	
