@@ -14,6 +14,7 @@ FeedCenter* GFeedCenter = nullptr;
 bool							FeedCenter::mRunning = false;
 std::vector<ClientSession*>		FeedCenter::mSessionVector;
 FeedStruct*							FeedCenter::mRecentFeed[PRODUCT_COUNT_MAX];
+FastSpinlock					FeedCenter::mLock;
 
 FeedCenter::FeedCenter()
 {
@@ -39,7 +40,8 @@ FeedCenter::~FeedCenter()
 
 void FeedCenter::Start()
 {
-	mRunning = true;
+	mRunning = true;	
+
 
 	mThreadHandle = (HANDLE)_beginthreadex(nullptr, 0, FeedGenerationThread, nullptr, 0, nullptr);
 }
@@ -76,9 +78,12 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 			}
 		}
 
+		int count = mSessionVector.size();
 
-		for (auto ses : mSessionVector)
+		for (int i = count - 1; i >= 0; --i)
 		{
+			ClientSession* ses = mSessionVector[i];
+
 			if (ses == nullptr) break;
 
 			if (ses->IsConnected())
@@ -90,7 +95,7 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 				context->SetFeedData(nullptr);
 
 				DatabaseJobContext* dbContext = reinterpret_cast<DatabaseJobContext*>(context);
-				
+
 				// let's create a db context, and post it to the iocp queue
 				if (FALSE == PostQueuedCompletionStatus(GIocpManager->GetCompletionPort(), dwTransferred, completionKey, (LPOVERLAPPED)dbContext))
 				{
@@ -98,7 +103,45 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 					continue;;
 				}
 			}
+			else
+			{
+				//printf_s("Session disconnected, removing from feedcenter\n");
+				mSessionVector.erase(mSessionVector.begin() + i);
+				continue;
+			}
 		}
+		
+		//for (auto it = mSessionVector.begin();
+		//	it != mSessionVector.end();
+		//	++it)
+		//{
+		//	ClientSession* ses = *it;
+		//	
+		//	if (ses == nullptr) break;
+
+		//	if (ses->IsConnected())
+		//	{
+		//		DWORD completionKey = CK_DB_RESULT;
+		//		DWORD dwTransferred = sizeof(SendFeedDataContext);
+
+		//		SendFeedDataContext* context = new SendFeedDataContext(ses);
+		//		context->SetFeedData(nullptr);
+
+		//		DatabaseJobContext* dbContext = reinterpret_cast<DatabaseJobContext*>(context);
+		//		
+		//		// let's create a db context, and post it to the iocp queue
+		//		if (FALSE == PostQueuedCompletionStatus(GIocpManager->GetCompletionPort(), dwTransferred, completionKey, (LPOVERLAPPED)dbContext))
+		//		{
+		//			printf_s("Error in posting DB job result to Queue: %d \n", GetLastError());
+		//			continue;;
+		//		}
+		//	}
+		//	else
+		//	{
+		//		//it = mSessionVector.erase(it);
+		//		continue;
+		//	}
+		//}
 
 
 		Sleep(30);
@@ -113,16 +156,16 @@ void FeedCenter::SubscribeFeed(ClientSession* session)
 
 void FeedCenter::UnsubscribeFeed(ClientSession* session)
 {
-	for (auto it = mSessionVector.begin();
+	/*for (auto it = mSessionVector.begin();
 		it != mSessionVector.end();
 		++it)
-	{
+		{
 		if ((*it)->GetSocket() == session->GetSocket())
 		{
-			it = mSessionVector.erase(it);
-			break;
+		it = mSessionVector.erase(it);
+		break;
 		}
-	}
+		}*/
 }
 
 void FeedCenter::PopulateFeedObject(OUT MyPacket::Feed& packet)

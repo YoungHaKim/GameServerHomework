@@ -90,7 +90,7 @@ using namespace MyPacket;
 
 REGISTER_HANDLER(PKT_CS_LOGIN)
 {
-	printf_s("Recv Login Request\n");
+	//printf_s("Recv Login Request\n");
 
 	LoginRequest loginReq;
 

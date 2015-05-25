@@ -99,7 +99,7 @@ REGISTER_HANDLER(PKT_SC_LOGIN)
 
 	const Position& pos = loginResult.playerpos();
 
-	printf_s("LOGIN SUCCESS: ID[%d], NAME[%s], POS[%f, %f, %f]\n", loginResult.playerid(), loginResult.playername().c_str(), pos.x(), pos.y(), pos.z());
+	//printf_s("LOGIN SUCCESS: ID[%d], NAME[%s], POS[%f, %f, %f]\n", loginResult.playerid(), loginResult.playername().c_str(), pos.x(), pos.y(), pos.z());
 }
 
 REGISTER_HANDLER(PKT_SC_FEED)
@@ -114,9 +114,9 @@ REGISTER_HANDLER(PKT_SC_FEED)
 	Depth* bidDepth = feedPacket.mutable_biddepth(0);
 	Depth* askDepth = feedPacket.mutable_askdepth(0);
 
-	printf_s("%.*s, [%d, %d, %f] : [%f, %d, %d]\n", 
+	/*printf_s("%.*s, [%d, %d, %f] : [%f, %d, %d]\n",
 		12, feedPacket.productcode().c_str(),
 		bidDepth->count(), bidDepth->qty(), bidDepth->price(),
 		askDepth->price(), askDepth->qty(), askDepth->count()
-		);
+		);*/
 }

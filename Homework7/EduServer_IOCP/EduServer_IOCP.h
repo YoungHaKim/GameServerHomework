@@ -10,6 +10,8 @@
 
 //#define SQL_SERVER_CONN_STR	L"Driver={SQL Server};Server=127.0.0.1\\SQL4GAMESERVER;Database=GameDB;UID=sa;PWD=...."
 #define SQL_SERVER_CONN_STR	L"Driver={SQL Server};Server=PETER\\SQLEXPRESS;Database=dbo;UID=sa;PWD=satest"
+//#define SQL_SERVER_CONN_STR	L"Driver={SQL Server};Server=WIN2012-Server\\SQLEXPRESS;Database=dbo;UID=test;PWD=test"
+
 
 
 #define GQCS_TIMEOUT	10 //INFINITE

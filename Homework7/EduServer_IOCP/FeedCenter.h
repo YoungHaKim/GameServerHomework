@@ -2,6 +2,7 @@
 
 #include "Feed.h"
 #include "MyPacket.pb.h"
+#include "FastSpinlock.h"
 /*
 continously generates a random feed for a given number of products
 broadcasts the feed to each session that is connected
@@ -30,9 +31,16 @@ private:
 	static unsigned int WINAPI FeedGenerationThread(void*);
 
 	static std::vector<ClientSession*> mSessionVector;
+
+	using c_iter = std::vector<ClientSession*>::const_iterator;
+	c_iter begin() const { return mSessionVector.begin(); }
+	c_iter end() const { return mSessionVector.end(); }
+
+
 	HANDLE mThreadHandle;
 
 	static bool mRunning;
+	static FastSpinlock mLock;
 
 	static FeedStruct* mRecentFeed[PRODUCT_COUNT_MAX];
 };
