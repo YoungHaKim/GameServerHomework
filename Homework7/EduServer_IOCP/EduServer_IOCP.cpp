@@ -32,7 +32,13 @@ int _tmain(int argc, _TCHAR* argv[])
 		return -1;
 
 	if (false == GDatabaseManager->Initialize())
-		return -1;
+	{
+		printf_s("Failed to initialize DB, hit c to continue, any other key to quit\n");
+		char pressedKey = (char)getchar();
+
+		if (pressedKey != 'c' && pressedKey != 'C')
+			return -1;
+	}
 
 	if (false == GDatabaseManager->StartDatabaseThreads())
 		return -1;

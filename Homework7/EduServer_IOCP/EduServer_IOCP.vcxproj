@@ -22,7 +22,7 @@
     <ProjectGuid>{CC01003C-D9E6-4C57-A6B1-4A191DE7AEF9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>EduServer_IOCP</RootNamespace>
-    <ProjectName>EduServer_IOCP_6</ProjectName>
+    <ProjectName>EduServer_IOCP_7</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\..\Protobuf</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

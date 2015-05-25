@@ -13,7 +13,7 @@ FeedCenter* GFeedCenter = nullptr;
 
 bool							FeedCenter::mRunning = false;
 std::vector<ClientSession*>		FeedCenter::mSessionVector;
-Feed*							FeedCenter::mRecentFeed[PRODUCT_COUNT_MAX];
+FeedStruct*							FeedCenter::mRecentFeed[PRODUCT_COUNT_MAX];
 
 FeedCenter::FeedCenter()
 {
@@ -22,7 +22,8 @@ FeedCenter::FeedCenter()
 	// be sure you don't exceed PRODUCT_MAX_COUNT
 	for (int i = 0; i < PRODUCT_COUNT_MAX; ++i)
 	{
-		mRecentFeed[i] = new Feed();
+		mRecentFeed[i] = new FeedStruct();
+
 	}
 
 	mRecentFeed[0]->mProductCode = "KR4101KC0000";
@@ -57,25 +58,29 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 	while (mRunning)
 	{	
 		// generate feed
-		int index = rand() % PRODUCT_COUNT_MAX;
-		Feed* feed = mRecentFeed[index];
-
-		for (int i = 0; i < DEPTH_MAX; i++)
+		for (int index = 0; index < PRODUCT_COUNT_MAX; ++index)
 		{
-			Depth curBidDepth = feed->mBidDepths[i];
-			curBidDepth.mCount = 2 + i;
-			curBidDepth.mPrc = 0.01 + (rand() % 300) * 0.01  - i * 0.01;
-			curBidDepth.mQty = 20 + i;
+			FeedStruct* feed = mRecentFeed[index];
 
-			Depth curAskDepth = feed->mAskDepths[i];
-			curAskDepth.mCount = 1 + i;
-			curAskDepth.mPrc = feed->mBidDepths[0].mPrc + i * 0.01;
-			curAskDepth.mQty = 10 + i;
+			for (int i = 0; i < DEPTH_MAX; i++)
+			{
+				DepthStruct* curBidDepth = feed->mBidDepths[i];
+				curBidDepth->mCount = 2 + i;
+				curBidDepth->mPrc = 0.01 + (rand() % 300) * 0.01 - i * 0.01;
+				curBidDepth->mQty = 20 + i;
+
+				DepthStruct* curAskDepth = feed->mAskDepths[i];
+				curAskDepth->mCount = 1 + i;
+				curAskDepth->mPrc = feed->mBidDepths[0]->mPrc + i * 0.01;
+				curAskDepth->mQty = 10 + i;
+			}
 		}
 
 
 		for (auto ses : mSessionVector)
 		{
+			if (ses == nullptr) break;
+
 			if (ses->IsConnected())
 			{
 				DWORD completionKey = CK_DB_RESULT;
@@ -115,7 +120,7 @@ void FeedCenter::UnsubscribeFeed(ClientSession* session)
 		if ((*it)->GetSocket() == session->GetSocket())
 		{
 			it = mSessionVector.erase(it);
-			continue;
+			break;
 		}
 	}
 }
@@ -126,27 +131,27 @@ void FeedCenter::PopulateFeedObject(OUT MyPacket::Feed& packet)
 	// copy into char array
 
 	int index = rand() % PRODUCT_COUNT_MAX;
-	Feed* feed = mRecentFeed[index];
+	FeedStruct* feed = mRecentFeed[index];
 
 	packet.set_productcode(feed->mProductCode);
 	
 	for (int i = 0; i < DEPTH_MAX; i++)
 	{
-		Depth curAskDepth = feed->mAskDepths[i];
+		DepthStruct* curAskDepth = feed->mAskDepths[i];
 				
 		MyPacket::Depth* askDepth = packet.add_askdepth();
 
-		askDepth->set_count(curAskDepth.mCount);
-		askDepth->set_price(curAskDepth.mPrc);
-		askDepth->set_qty(curAskDepth.mQty);
+		askDepth->set_count(curAskDepth->mCount);
+		askDepth->set_price(curAskDepth->mPrc);
+		askDepth->set_qty(curAskDepth->mQty);
 
-		Depth curBidDepth = feed->mBidDepths[i];
+		DepthStruct* curBidDepth = feed->mBidDepths[i];
 
 		MyPacket::Depth* bidDepth = packet.add_biddepth();
 
-		bidDepth->set_count(curBidDepth.mCount);
-		bidDepth->set_price(curBidDepth.mPrc);
-		bidDepth->set_qty(curBidDepth.mQty);
+		bidDepth->set_count(curBidDepth->mCount);
+		bidDepth->set_price(curBidDepth->mPrc);
+		bidDepth->set_qty(curBidDepth->mQty);
 	}
 
 }

@@ -34,7 +34,7 @@ private:
 
 	static bool mRunning;
 
-	static Feed* mRecentFeed[PRODUCT_COUNT_MAX];
+	static FeedStruct* mRecentFeed[PRODUCT_COUNT_MAX];
 };
 
 extern FeedCenter* GFeedCenter;

@@ -110,9 +110,11 @@
     <ClInclude Include="Feed.h">
       <Filter>PriceFeed</Filter>
     </ClInclude>
-    <ClInclude Include="FeedCenter.h" />
     <ClInclude Include="..\..\Protobuf\MyPacket.pb.h">
       <Filter>Protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="FeedCenter.h">
+      <Filter>PriceFeed</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,11 +187,11 @@
     <ClCompile Include="Feed.cpp">
       <Filter>PriceFeed</Filter>
     </ClCompile>
-    <ClCompile Include="FeedCenter.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Protobuf\MyPacket.pb.cc">
       <Filter>Protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="FeedCenter.cpp">
+      <Filter>PriceFeed</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
