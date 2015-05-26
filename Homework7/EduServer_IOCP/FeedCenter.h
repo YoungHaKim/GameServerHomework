@@ -8,7 +8,7 @@ continously generates a random feed for a given number of products
 broadcasts the feed to each session that is connected
 */
 
-#define PRODUCT_COUNT_MAX 3
+#define PRODUCT_COUNT_MAX 11
 
 class ClientSession;
 
@@ -29,6 +29,8 @@ public:
 
 private:
 	static unsigned int WINAPI FeedGenerationThread(void*);
+
+	static void SendFeedOnce(ClientSession* ses);	
 
 	static std::vector<ClientSession*> mSessionVector;
 

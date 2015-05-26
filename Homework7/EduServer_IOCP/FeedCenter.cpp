@@ -30,6 +30,14 @@ FeedCenter::FeedCenter()
 	mRecentFeed[0]->mProductCode = "KR4101KC0000";
 	mRecentFeed[1]->mProductCode = "KR4201KC2500";
 	mRecentFeed[2]->mProductCode = "KR4301KC2500";
+	mRecentFeed[3]->mProductCode = "KR4201KC2520";
+	mRecentFeed[4]->mProductCode = "KR4301KC2520";
+	mRecentFeed[5]->mProductCode = "KR4201KC2550";
+	mRecentFeed[6]->mProductCode = "KR4301KC2550";
+	mRecentFeed[7]->mProductCode = "KR4201KC2570";
+	mRecentFeed[8]->mProductCode = "KR4301KC2570";
+	mRecentFeed[9]->mProductCode = "KR4201KC2600";
+	mRecentFeed[10]->mProductCode = "KR4301KC2600";
 }
 
 
@@ -52,6 +60,23 @@ void FeedCenter::Finalize()
 	if (mThreadHandle != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(mThreadHandle);
+	}
+}
+
+void FeedCenter::SendFeedOnce(ClientSession* ses)
+{
+	DWORD completionKey = CK_DB_RESULT;
+	DWORD dwTransferred = sizeof(SendFeedDataContext);
+
+	SendFeedDataContext* context = new SendFeedDataContext(ses);
+	context->SetFeedData(nullptr);
+
+	DatabaseJobContext* dbContext = reinterpret_cast<DatabaseJobContext*>(context);
+
+	// let's create a db context, and post it to the iocp queue
+	if (FALSE == PostQueuedCompletionStatus(GIocpManager->GetCompletionPort(), dwTransferred, completionKey, (LPOVERLAPPED)dbContext))
+	{
+		printf_s("Error in posting DB job result to Queue: %d \n", GetLastError());
 	}
 }
 
@@ -88,19 +113,11 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 
 			if (ses->IsConnected())
 			{
-				DWORD completionKey = CK_DB_RESULT;
-				DWORD dwTransferred = sizeof(SendFeedDataContext);
+				int numFeedsToBroadcast = rand() % PRODUCT_COUNT_MAX;
 
-				SendFeedDataContext* context = new SendFeedDataContext(ses);
-				context->SetFeedData(nullptr);
-
-				DatabaseJobContext* dbContext = reinterpret_cast<DatabaseJobContext*>(context);
-
-				// let's create a db context, and post it to the iocp queue
-				if (FALSE == PostQueuedCompletionStatus(GIocpManager->GetCompletionPort(), dwTransferred, completionKey, (LPOVERLAPPED)dbContext))
+				for (int j = 0; j < numFeedsToBroadcast; ++j)
 				{
-					printf_s("Error in posting DB job result to Queue: %d \n", GetLastError());
-					continue;;
+					SendFeedOnce(ses);
 				}
 			}
 			else
