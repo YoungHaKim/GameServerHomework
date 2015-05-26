@@ -12,6 +12,9 @@
     <Filter Include="Threading">
       <UniqueIdentifier>{4f5e5079-d59c-4fe2-904d-cb9eff4ddf02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Protobuf">
+      <UniqueIdentifier>{01e3aed2-84c4-4c4c-a509-27d07f740374}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -80,6 +83,9 @@
     <ClInclude Include="PlayerWideEvent.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Protobuf\MyPacket.pb.h">
+      <Filter>Protobuf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -130,5 +136,13 @@
     <ClCompile Include="PlayerWideEvent.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Protobuf\MyPacket.pb.cc">
+      <Filter>Protobuf</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Protobuf\MyPacket.proto">
+      <Filter>Protobuf</Filter>
+    </None>
   </ItemGroup>
 </Project>

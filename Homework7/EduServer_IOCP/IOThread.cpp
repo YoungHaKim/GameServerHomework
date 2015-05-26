@@ -27,7 +27,7 @@ DWORD IOThread::Run()
 	{
 		DoIocpJob();
 
-		DoSendJob(); ///< aggregated sends
+		//DoSendJob(); ///< aggregated sends
 
 		//... ...
 	}

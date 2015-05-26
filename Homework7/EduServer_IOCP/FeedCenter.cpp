@@ -8,12 +8,11 @@
 
 #define  NUMBER_OF_CONNECTIONS 100
 
-
 FeedCenter* GFeedCenter = nullptr;
 
 bool							FeedCenter::mRunning = false;
 std::vector<ClientSession*>		FeedCenter::mSessionVector;
-FeedStruct*							FeedCenter::mRecentFeed[PRODUCT_COUNT_MAX];
+FeedStruct*						FeedCenter::mRecentFeed[PRODUCT_COUNT_MAX];
 FastSpinlock					FeedCenter::mLock;
 
 FeedCenter::FeedCenter()
