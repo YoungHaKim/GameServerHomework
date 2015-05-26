@@ -113,7 +113,7 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 
 			if (ses->IsConnected())
 			{
-				int numFeedsToBroadcast = rand() % PRODUCT_COUNT_MAX;
+				int numFeedsToBroadcast = 2; // rand() % PRODUCT_COUNT_MAX;
 
 				for (int j = 0; j < numFeedsToBroadcast; ++j)
 				{
