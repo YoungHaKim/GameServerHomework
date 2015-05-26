@@ -102,14 +102,14 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 				for (int i = 0; i < DEPTH_MAX; i++)
 				{
 					MyPacket::Depth* curBidDepth = feed->mutable_biddepth(i);
-					curBidDepth->set_count(2 + i);
+					curBidDepth->set_count(rand() % 20);
 					curBidDepth->set_price(0.01 + (rand() % 300) * 0.01 - i * 0.01);
-					curBidDepth->set_qty(20 + i);
+					curBidDepth->set_qty(rand() % 100);
 
 					MyPacket::Depth* curAskDepth = feed->mutable_askdepth(i);
-					curAskDepth->set_count(1 + i);
+					curAskDepth->set_count(rand() % 20);
 					curAskDepth->set_price(feed->mutable_biddepth(0)->price() + i * 0.01);
-					curAskDepth->set_qty(10 + i);
+					curAskDepth->set_qty(rand() % 100);
 				}
 			}
 		}
@@ -131,6 +131,7 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 				if (i >= 0)
 				{
 					//printf_s("Session disconnected, removing from feedcenter\n");
+					--(GFeedCenter->mSessionCount);
 					mSessionVector.erase(mSessionVector.begin() + i);
 					continue;
 				}
@@ -177,6 +178,7 @@ unsigned int WINAPI FeedCenter::FeedGenerationThread(void* lParam)
 
 void FeedCenter::SubscribeFeed(ClientSession* session)
 {
+	++mSessionCount;
 	mSessionVector.emplace_back(session);
 }
 

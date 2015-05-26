@@ -111,12 +111,31 @@ REGISTER_HANDLER(PKT_SC_FEED)
 		return;
 	}
 
-	Depth* bidDepth = feedPacket.mutable_biddepth(0);
+	/*Depth* bidDepth = feedPacket.mutable_biddepth(0);
 	Depth* askDepth = feedPacket.mutable_askdepth(0);
+
+	MyPacket::Order order;
+	order.set_productcode(feedPacket.productcode());
+	order.set_orderprice(bidDepth->price());
+	order.set_orderqty(bidDepth->qty());
+	order.set_ordernumber(1);
+
+	session->SendRequest(MyPacket::PKT_CS_ORDER, order);*/
+
 
 	/*printf_s("%.*s, [%d, %d, %f] : [%f, %d, %d]\n",
 		12, feedPacket.productcode().c_str(),
 		bidDepth->count(), bidDepth->qty(), bidDepth->price(),
 		askDepth->price(), askDepth->qty(), askDepth->count()
 		);*/
+}
+
+REGISTER_HANDLER(PKT_SC_SERVER_STATUS)
+{
+	ServerStatus status;
+	if (false == status.ParseFromCodedStream(&payloadStream))
+	{
+		session->DisconnectRequest(DR_ACTIVE);
+		return;
+	}
 }

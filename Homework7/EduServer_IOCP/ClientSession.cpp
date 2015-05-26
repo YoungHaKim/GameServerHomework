@@ -12,6 +12,8 @@
 
 #define CLIENT_BUFSIZE	65536
 
+bool ClientSession::mShowConnect;
+
 ClientSession::ClientSession() : Session(CLIENT_BUFSIZE, CLIENT_BUFSIZE), mPlayer(this)
 {
 	memset(&mClientAddr, 0, sizeof(SOCKADDR_IN));
@@ -140,7 +142,8 @@ void ClientSession::AcceptCompletion()
 		return;
 	}
 
-	//printf_s("[DEBUG] Client Connected: IP=%s, PORT=%d\n", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
+	if (ClientSession::mShowConnect)
+		printf_s("[DEBUG] Client Connected: IP=%s, PORT=%d\n", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
 
 	if (false == PreRecv())
 	{

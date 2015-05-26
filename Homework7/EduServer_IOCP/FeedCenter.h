@@ -29,6 +29,8 @@ public:
 	void SubscribeFeed(ClientSession* session);
 	void UnsubscribeFeed(ClientSession* session);
 
+	int GetSessionCount() const { return mSessionCount; }
+
 private:
 	static unsigned int WINAPI FeedGenerationThread(void*);
 
@@ -42,6 +44,8 @@ private:
 
 
 	HANDLE mThreadHandle[FEED_THREAD_COUNT];
+
+	int mSessionCount = 0;
 
 	static bool mRunning;
 	static FastSpinlock mLock;

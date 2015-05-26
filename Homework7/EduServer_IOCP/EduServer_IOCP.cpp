@@ -12,6 +12,8 @@
 #include "Log.h"
 #include "FeedCenter.h"
 
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	LThreadType = THREAD_MAIN;
@@ -27,6 +29,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	GDatabaseManager = new DBManager;
 
 	LoggerUtil::InitializeTime();
+
+	printf_s("press t to show connect msg, enter to not show\n");
+	char key1 = (char)getchar();
+
+	if (tolower(key1) == 't')
+		ClientSession::mShowConnect = true;
+	else
+		ClientSession::mShowConnect = false;
 
 	if (false == GIocpManager->Initialize())
 		return -1;

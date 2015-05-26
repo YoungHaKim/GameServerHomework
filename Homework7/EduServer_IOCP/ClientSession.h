@@ -26,6 +26,7 @@ public:
 
 public:
 	Player			mPlayer;
+	static bool mShowConnect;
 
 private:
 	

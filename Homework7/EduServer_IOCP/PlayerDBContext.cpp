@@ -208,6 +208,11 @@ void SendFeedDataContext::OnSuccess()
 {
 	// send data to socket!
 	mSessionObject->SendRequest(MyPacket::PKT_SC_FEED, *mFeedObj);
+
+	/*MyPacket::ServerStatus status;
+	status.set_sessioncount(GFeedCenter->GetSessionCount());
+	mSessionObject->SendRequest(MyPacket::PKT_SC_SERVER_STATUS, status);*/
+
 }
 
 void SendFeedDataContext::OnFail()

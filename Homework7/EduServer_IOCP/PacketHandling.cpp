@@ -6,6 +6,7 @@
 
 
 #include "MyPacket.pb.h"
+#include "FeedCenter.h"
 
 
 //@{ Handler Helper
@@ -111,4 +112,32 @@ REGISTER_HANDLER(PKT_CS_LOGIN)
 	pos->set_z(3);
 
 	session->SendRequest(MyPacket::PKT_SC_LOGIN, loginResult);
+}
+
+REGISTER_HANDLER(PKT_CS_SERVER_STATUS)
+{
+	ServerStatus serverStatus;
+
+	if (false == serverStatus.ParseFromCodedStream(&payloadStream))
+	{
+		session->DisconnectRequest(DR_ACTIVE);  // why disconnect?
+		return;
+	}
+
+	ServerStatus myServerState;
+	myServerState.set_sessioncount(GFeedCenter->GetSessionCount());
+
+	session->SendRequest(MyPacket::PKT_SC_SERVER_STATUS, myServerState);
+
+}
+
+REGISTER_HANDLER(PKT_CS_ORDER)
+{
+	Order order;
+	if (false == order.ParseFromCodedStream(&payloadStream))
+	{
+		session->DisconnectRequest(DR_ACTIVE);  // why disconnect?
+		return;
+	}
+
 }

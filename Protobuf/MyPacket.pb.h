@@ -41,6 +41,8 @@ class MoveRequest;
 class MoveResult;
 class Depth;
 class Feed;
+class ServerStatus;
+class Order;
 
 enum MessageType {
   PKT_CS_LOGIN = 1,
@@ -49,11 +51,14 @@ enum MessageType {
   PKT_SC_CHAT = 4,
   PKT_CS_MOVE = 5,
   PKT_SC_MOVE = 6,
-  PKT_SC_FEED = 7
+  PKT_SC_FEED = 7,
+  PKT_CS_SERVER_STATUS = 8,
+  PKT_SC_SERVER_STATUS = 9,
+  PKT_CS_ORDER = 10
 };
 bool MessageType_IsValid(int value);
 const MessageType MessageType_MIN = PKT_CS_LOGIN;
-const MessageType MessageType_MAX = PKT_SC_FEED;
+const MessageType MessageType_MAX = PKT_CS_ORDER;
 const int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
 // ===================================================================
@@ -960,6 +965,207 @@ class Feed : public ::google::protobuf::MessageLite {
   void InitAsDefaultInstance();
   static Feed* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class ServerStatus : public ::google::protobuf::MessageLite {
+ public:
+  ServerStatus();
+  virtual ~ServerStatus();
+
+  ServerStatus(const ServerStatus& from);
+
+  inline ServerStatus& operator=(const ServerStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ServerStatus& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const ServerStatus* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
+
+  void Swap(ServerStatus* other);
+
+  // implements Message ----------------------------------------------
+
+  ServerStatus* New() const;
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
+  void CopyFrom(const ServerStatus& from);
+  void MergeFrom(const ServerStatus& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::std::string GetTypeName() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required int32 SessionCount = 1;
+  inline bool has_sessioncount() const;
+  inline void clear_sessioncount();
+  static const int kSessionCountFieldNumber = 1;
+  inline ::google::protobuf::int32 sessioncount() const;
+  inline void set_sessioncount(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:MyPacket.ServerStatus)
+ private:
+  inline void set_has_sessioncount();
+  inline void clear_has_sessioncount();
+
+  ::google::protobuf::int32 sessioncount_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_MyPacket_2eproto_impl();
+  #else
+  friend void  protobuf_AddDesc_MyPacket_2eproto();
+  #endif
+  friend void protobuf_AssignDesc_MyPacket_2eproto();
+  friend void protobuf_ShutdownFile_MyPacket_2eproto();
+
+  void InitAsDefaultInstance();
+  static ServerStatus* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Order : public ::google::protobuf::MessageLite {
+ public:
+  Order();
+  virtual ~Order();
+
+  Order(const Order& from);
+
+  inline Order& operator=(const Order& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const Order& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Order* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
+
+  void Swap(Order* other);
+
+  // implements Message ----------------------------------------------
+
+  Order* New() const;
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
+  void CopyFrom(const Order& from);
+  void MergeFrom(const Order& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::std::string GetTypeName() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required int32 OrderNumber = 1;
+  inline bool has_ordernumber() const;
+  inline void clear_ordernumber();
+  static const int kOrderNumberFieldNumber = 1;
+  inline ::google::protobuf::int32 ordernumber() const;
+  inline void set_ordernumber(::google::protobuf::int32 value);
+
+  // required int32 OrderQty = 2;
+  inline bool has_orderqty() const;
+  inline void clear_orderqty();
+  static const int kOrderQtyFieldNumber = 2;
+  inline ::google::protobuf::int32 orderqty() const;
+  inline void set_orderqty(::google::protobuf::int32 value);
+
+  // required float OrderPrice = 3;
+  inline bool has_orderprice() const;
+  inline void clear_orderprice();
+  static const int kOrderPriceFieldNumber = 3;
+  inline float orderprice() const;
+  inline void set_orderprice(float value);
+
+  // required string ProductCode = 4;
+  inline bool has_productcode() const;
+  inline void clear_productcode();
+  static const int kProductCodeFieldNumber = 4;
+  inline const ::std::string& productcode() const;
+  inline void set_productcode(const ::std::string& value);
+  inline void set_productcode(const char* value);
+  inline void set_productcode(const char* value, size_t size);
+  inline ::std::string* mutable_productcode();
+  inline ::std::string* release_productcode();
+  inline void set_allocated_productcode(::std::string* productcode);
+
+  // @@protoc_insertion_point(class_scope:MyPacket.Order)
+ private:
+  inline void set_has_ordernumber();
+  inline void clear_has_ordernumber();
+  inline void set_has_orderqty();
+  inline void clear_has_orderqty();
+  inline void set_has_orderprice();
+  inline void clear_has_orderprice();
+  inline void set_has_productcode();
+  inline void clear_has_productcode();
+
+  ::google::protobuf::int32 ordernumber_;
+  ::google::protobuf::int32 orderqty_;
+  ::std::string* productcode_;
+  float orderprice_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_MyPacket_2eproto_impl();
+  #else
+  friend void  protobuf_AddDesc_MyPacket_2eproto();
+  #endif
+  friend void protobuf_AssignDesc_MyPacket_2eproto();
+  friend void protobuf_ShutdownFile_MyPacket_2eproto();
+
+  void InitAsDefaultInstance();
+  static Order* default_instance_;
+};
 // ===================================================================
 
 
@@ -1765,6 +1971,172 @@ Feed::askdepth() const {
 inline ::google::protobuf::RepeatedPtrField< ::MyPacket::Depth >*
 Feed::mutable_askdepth() {
   return &askdepth_;
+}
+
+// -------------------------------------------------------------------
+
+// ServerStatus
+
+// required int32 SessionCount = 1;
+inline bool ServerStatus::has_sessioncount() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ServerStatus::set_has_sessioncount() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ServerStatus::clear_has_sessioncount() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ServerStatus::clear_sessioncount() {
+  sessioncount_ = 0;
+  clear_has_sessioncount();
+}
+inline ::google::protobuf::int32 ServerStatus::sessioncount() const {
+  return sessioncount_;
+}
+inline void ServerStatus::set_sessioncount(::google::protobuf::int32 value) {
+  set_has_sessioncount();
+  sessioncount_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Order
+
+// required int32 OrderNumber = 1;
+inline bool Order::has_ordernumber() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Order::set_has_ordernumber() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Order::clear_has_ordernumber() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Order::clear_ordernumber() {
+  ordernumber_ = 0;
+  clear_has_ordernumber();
+}
+inline ::google::protobuf::int32 Order::ordernumber() const {
+  return ordernumber_;
+}
+inline void Order::set_ordernumber(::google::protobuf::int32 value) {
+  set_has_ordernumber();
+  ordernumber_ = value;
+}
+
+// required int32 OrderQty = 2;
+inline bool Order::has_orderqty() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Order::set_has_orderqty() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Order::clear_has_orderqty() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Order::clear_orderqty() {
+  orderqty_ = 0;
+  clear_has_orderqty();
+}
+inline ::google::protobuf::int32 Order::orderqty() const {
+  return orderqty_;
+}
+inline void Order::set_orderqty(::google::protobuf::int32 value) {
+  set_has_orderqty();
+  orderqty_ = value;
+}
+
+// required float OrderPrice = 3;
+inline bool Order::has_orderprice() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Order::set_has_orderprice() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Order::clear_has_orderprice() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Order::clear_orderprice() {
+  orderprice_ = 0;
+  clear_has_orderprice();
+}
+inline float Order::orderprice() const {
+  return orderprice_;
+}
+inline void Order::set_orderprice(float value) {
+  set_has_orderprice();
+  orderprice_ = value;
+}
+
+// required string ProductCode = 4;
+inline bool Order::has_productcode() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Order::set_has_productcode() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Order::clear_has_productcode() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Order::clear_productcode() {
+  if (productcode_ != &::google::protobuf::internal::kEmptyString) {
+    productcode_->clear();
+  }
+  clear_has_productcode();
+}
+inline const ::std::string& Order::productcode() const {
+  return *productcode_;
+}
+inline void Order::set_productcode(const ::std::string& value) {
+  set_has_productcode();
+  if (productcode_ == &::google::protobuf::internal::kEmptyString) {
+    productcode_ = new ::std::string;
+  }
+  productcode_->assign(value);
+}
+inline void Order::set_productcode(const char* value) {
+  set_has_productcode();
+  if (productcode_ == &::google::protobuf::internal::kEmptyString) {
+    productcode_ = new ::std::string;
+  }
+  productcode_->assign(value);
+}
+inline void Order::set_productcode(const char* value, size_t size) {
+  set_has_productcode();
+  if (productcode_ == &::google::protobuf::internal::kEmptyString) {
+    productcode_ = new ::std::string;
+  }
+  productcode_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_productcode() {
+  set_has_productcode();
+  if (productcode_ == &::google::protobuf::internal::kEmptyString) {
+    productcode_ = new ::std::string;
+  }
+  return productcode_;
+}
+inline ::std::string* Order::release_productcode() {
+  clear_has_productcode();
+  if (productcode_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = productcode_;
+    productcode_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Order::set_allocated_productcode(::std::string* productcode) {
+  if (productcode_ != &::google::protobuf::internal::kEmptyString) {
+    delete productcode_;
+  }
+  if (productcode) {
+    set_has_productcode();
+    productcode_ = productcode;
+  } else {
+    clear_has_productcode();
+    productcode_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
 

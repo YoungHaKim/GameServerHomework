@@ -24,6 +24,8 @@ void protobuf_ShutdownFile_MyPacket_2eproto() {
   delete MoveResult::default_instance_;
   delete Depth::default_instance_;
   delete Feed::default_instance_;
+  delete ServerStatus::default_instance_;
+  delete Order::default_instance_;
 }
 
 #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
@@ -47,6 +49,8 @@ void protobuf_AddDesc_MyPacket_2eproto() {
   MoveResult::default_instance_ = new MoveResult();
   Depth::default_instance_ = new Depth();
   Feed::default_instance_ = new Feed();
+  ServerStatus::default_instance_ = new ServerStatus();
+  Order::default_instance_ = new Order();
   LoginRequest::default_instance_->InitAsDefaultInstance();
   Position::default_instance_->InitAsDefaultInstance();
   LoginResult::default_instance_->InitAsDefaultInstance();
@@ -56,6 +60,8 @@ void protobuf_AddDesc_MyPacket_2eproto() {
   MoveResult::default_instance_->InitAsDefaultInstance();
   Depth::default_instance_->InitAsDefaultInstance();
   Feed::default_instance_->InitAsDefaultInstance();
+  ServerStatus::default_instance_->InitAsDefaultInstance();
+  Order::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_MyPacket_2eproto);
 }
 
@@ -82,6 +88,9 @@ bool MessageType_IsValid(int value) {
     case 5:
     case 6:
     case 7:
+    case 8:
+    case 9:
+    case 10:
       return true;
     default:
       return false;
@@ -2075,6 +2084,451 @@ void Feed::Swap(Feed* other) {
 
 ::std::string Feed::GetTypeName() const {
   return "MyPacket.Feed";
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ServerStatus::kSessionCountFieldNumber;
+#endif  // !_MSC_VER
+
+ServerStatus::ServerStatus()
+  : ::google::protobuf::MessageLite() {
+  SharedCtor();
+}
+
+void ServerStatus::InitAsDefaultInstance() {
+}
+
+ServerStatus::ServerStatus(const ServerStatus& from)
+  : ::google::protobuf::MessageLite() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ServerStatus::SharedCtor() {
+  _cached_size_ = 0;
+  sessioncount_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ServerStatus::~ServerStatus() {
+  SharedDtor();
+}
+
+void ServerStatus::SharedDtor() {
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
+  if (this != default_instance_) {
+  #endif
+  }
+}
+
+void ServerStatus::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ServerStatus& ServerStatus::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_MyPacket_2eproto();
+#else
+  if (default_instance_ == NULL) protobuf_AddDesc_MyPacket_2eproto();
+#endif
+  return *default_instance_;
+}
+
+ServerStatus* ServerStatus::default_instance_ = NULL;
+
+ServerStatus* ServerStatus::New() const {
+  return new ServerStatus;
+}
+
+void ServerStatus::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    sessioncount_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+bool ServerStatus::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int32 SessionCount = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &sessioncount_)));
+          set_has_sessioncount();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ServerStatus::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required int32 SessionCount = 1;
+  if (has_sessioncount()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->sessioncount(), output);
+  }
+
+}
+
+int ServerStatus::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int32 SessionCount = 1;
+    if (has_sessioncount()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->sessioncount());
+    }
+
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ServerStatus::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const ServerStatus*>(&from));
+}
+
+void ServerStatus::MergeFrom(const ServerStatus& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_sessioncount()) {
+      set_sessioncount(from.sessioncount());
+    }
+  }
+}
+
+void ServerStatus::CopyFrom(const ServerStatus& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ServerStatus::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  return true;
+}
+
+void ServerStatus::Swap(ServerStatus* other) {
+  if (other != this) {
+    std::swap(sessioncount_, other->sessioncount_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::std::string ServerStatus::GetTypeName() const {
+  return "MyPacket.ServerStatus";
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int Order::kOrderNumberFieldNumber;
+const int Order::kOrderQtyFieldNumber;
+const int Order::kOrderPriceFieldNumber;
+const int Order::kProductCodeFieldNumber;
+#endif  // !_MSC_VER
+
+Order::Order()
+  : ::google::protobuf::MessageLite() {
+  SharedCtor();
+}
+
+void Order::InitAsDefaultInstance() {
+}
+
+Order::Order(const Order& from)
+  : ::google::protobuf::MessageLite() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Order::SharedCtor() {
+  _cached_size_ = 0;
+  ordernumber_ = 0;
+  orderqty_ = 0;
+  orderprice_ = 0;
+  productcode_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Order::~Order() {
+  SharedDtor();
+}
+
+void Order::SharedDtor() {
+  if (productcode_ != &::google::protobuf::internal::kEmptyString) {
+    delete productcode_;
+  }
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
+  if (this != default_instance_) {
+  #endif
+  }
+}
+
+void Order::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const Order& Order::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_MyPacket_2eproto();
+#else
+  if (default_instance_ == NULL) protobuf_AddDesc_MyPacket_2eproto();
+#endif
+  return *default_instance_;
+}
+
+Order* Order::default_instance_ = NULL;
+
+Order* Order::New() const {
+  return new Order;
+}
+
+void Order::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    ordernumber_ = 0;
+    orderqty_ = 0;
+    orderprice_ = 0;
+    if (has_productcode()) {
+      if (productcode_ != &::google::protobuf::internal::kEmptyString) {
+        productcode_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+bool Order::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int32 OrderNumber = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &ordernumber_)));
+          set_has_ordernumber();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_OrderQty;
+        break;
+      }
+
+      // required int32 OrderQty = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_OrderQty:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &orderqty_)));
+          set_has_orderqty();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(29)) goto parse_OrderPrice;
+        break;
+      }
+
+      // required float OrderPrice = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED32) {
+         parse_OrderPrice:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &orderprice_)));
+          set_has_orderprice();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_ProductCode;
+        break;
+      }
+
+      // required string ProductCode = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ProductCode:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_productcode()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Order::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required int32 OrderNumber = 1;
+  if (has_ordernumber()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ordernumber(), output);
+  }
+
+  // required int32 OrderQty = 2;
+  if (has_orderqty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->orderqty(), output);
+  }
+
+  // required float OrderPrice = 3;
+  if (has_orderprice()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->orderprice(), output);
+  }
+
+  // required string ProductCode = 4;
+  if (has_productcode()) {
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->productcode(), output);
+  }
+
+}
+
+int Order::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int32 OrderNumber = 1;
+    if (has_ordernumber()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->ordernumber());
+    }
+
+    // required int32 OrderQty = 2;
+    if (has_orderqty()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->orderqty());
+    }
+
+    // required float OrderPrice = 3;
+    if (has_orderprice()) {
+      total_size += 1 + 4;
+    }
+
+    // required string ProductCode = 4;
+    if (has_productcode()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->productcode());
+    }
+
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Order::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const Order*>(&from));
+}
+
+void Order::MergeFrom(const Order& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_ordernumber()) {
+      set_ordernumber(from.ordernumber());
+    }
+    if (from.has_orderqty()) {
+      set_orderqty(from.orderqty());
+    }
+    if (from.has_orderprice()) {
+      set_orderprice(from.orderprice());
+    }
+    if (from.has_productcode()) {
+      set_productcode(from.productcode());
+    }
+  }
+}
+
+void Order::CopyFrom(const Order& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Order::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+
+  return true;
+}
+
+void Order::Swap(Order* other) {
+  if (other != this) {
+    std::swap(ordernumber_, other->ordernumber_);
+    std::swap(orderqty_, other->orderqty_);
+    std::swap(orderprice_, other->orderprice_);
+    std::swap(productcode_, other->productcode_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::std::string Order::GetTypeName() const {
+  return "MyPacket.Order";
 }
 
 

@@ -14,6 +14,11 @@ enum MessageType
 	PKT_SC_MOVE = 6;
 
 	PKT_SC_FEED = 7;
+
+	PKT_CS_SERVER_STATUS = 8;
+	PKT_SC_SERVER_STATUS = 9;
+
+	PKT_CS_ORDER = 10;
 }
 
 message LoginRequest
@@ -71,4 +76,17 @@ message Feed
 	required string ProductCode = 1;
 	repeated Depth BidDepth = 2;
 	repeated Depth AskDepth = 3;
+}
+
+message ServerStatus
+{
+	required int32 SessionCount = 1;
+}
+
+message Order
+{
+	required int32 OrderNumber = 1;
+	required int32 OrderQty = 2;
+	required float OrderPrice = 3;
+	required string ProductCode = 4;
 }
