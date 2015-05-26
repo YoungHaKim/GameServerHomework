@@ -7,7 +7,7 @@
 #include "IocpManager.h"
 #include "ClientSessionManager.h"
 #include "Player.h"
-#include "../Protobuf/MyPacket.pb.h"
+#include "MyPacket.pb.h"
 #include "FeedCenter.h"
 
 #define CLIENT_BUFSIZE	65536
@@ -140,7 +140,7 @@ void ClientSession::AcceptCompletion()
 		return;
 	}
 
-	printf_s("[DEBUG] Client Connected: IP=%s, PORT=%d\n", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
+	//printf_s("[DEBUG] Client Connected: IP=%s, PORT=%d\n", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
 
 	if (false == PreRecv())
 	{
@@ -192,12 +192,28 @@ bool ClientSession::SendRequest(short packetType, const protobuf::MessageLite& p
 
 	codedOutputStream.WriteRaw(&header, HEADER_SIZE);
 	payload.SerializeToCodedStream(&codedOutputStream);
-
-
-	/// flush later...
-	LSendRequestSessionList->push_back(this);
-
+	
 	mSendBuffer.Commit(totalSize);
 
+	OverlappedSendContext* sendContext = new OverlappedSendContext(this);
+	DWORD sendbytes = 0;
+	DWORD flags = 0;
+	sendContext->mWsaBuf.len = (ULONG)mSendBuffer.GetContiguiousBytes();
+	sendContext->mWsaBuf.buf = mSendBuffer.GetBufferStart();
+
+	/// start async send
+	if (SOCKET_ERROR == WSASend(mSocket, &sendContext->mWsaBuf, 1, &sendbytes, flags, (LPWSAOVERLAPPED)sendContext, NULL))
+	{
+		if (WSAGetLastError() != WSA_IO_PENDING)
+		{
+			DeleteIoContext(sendContext);
+			printf_s("Session::FlushSend Error : %d\n", GetLastError());
+
+			DisconnectRequest(DR_SENDFLUSH_ERROR);
+			return true;
+		}
+
+	}
+	
 	return true;
 }

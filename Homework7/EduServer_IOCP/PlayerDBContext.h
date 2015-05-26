@@ -13,14 +13,13 @@ struct SendFeedDataContext : public DatabaseJobContext, public ObjectPool<SendFe
 		m_FeedCreationSuccess = false;
 	}
 
-	void SetFeedData(Feed* feedObj);
+	void SetFeedData(MyPacket::Feed* feedObj);
 
 	virtual bool OnSQLExecute();
 	virtual void OnSuccess();
 	virtual void OnFail();
 
-	MyPacket::Feed mProtoFeed;
-	Feed* mFeedObj;
+	MyPacket::Feed* mFeedObj;	
 	bool m_FeedCreationSuccess;
 };
 

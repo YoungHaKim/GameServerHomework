@@ -207,7 +207,7 @@ bool SendFeedDataContext::OnSQLExecute()
 void SendFeedDataContext::OnSuccess()
 {
 	// send data to socket!
-	mSessionObject->SendRequest(MyPacket::PKT_SC_FEED, mProtoFeed);
+	mSessionObject->SendRequest(MyPacket::PKT_SC_FEED, *mFeedObj);
 }
 
 void SendFeedDataContext::OnFail()
@@ -215,12 +215,12 @@ void SendFeedDataContext::OnFail()
 	printf_s("Failed to run feed generation\n");
 }
 
-void SendFeedDataContext::SetFeedData(Feed* feedObj)
+void SendFeedDataContext::SetFeedData(MyPacket::Feed* feedObj)
 {
 	if (GFeedCenter == nullptr)
 		return;
 
-	GFeedCenter->PopulateFeedObject(mProtoFeed);
+	mFeedObj = feedObj;
 
 	m_FeedCreationSuccess = true;
 }

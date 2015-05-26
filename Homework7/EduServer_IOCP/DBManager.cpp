@@ -27,8 +27,8 @@ bool DBManager::Initialize()
 	if (mDbCompletionPort == NULL)
 		return false;
 
-	if (false == DBHelper::Initialize(SQL_SERVER_CONN_STR, MAX_DB_THREAD))
-		return false;
+	//if (false == DBHelper::Initialize(SQL_SERVER_CONN_STR, MAX_DB_THREAD))
+		//return false;
 
 	return true;
 }

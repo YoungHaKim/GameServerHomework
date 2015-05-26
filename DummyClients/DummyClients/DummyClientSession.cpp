@@ -117,7 +117,9 @@ void DummyClientSession::ConnectCompletion()
 
 	
 	int curr = GSessionManager->IncreaseClientSession();
-	printf_s("[DEBUG:%d] Session established: IP=%s, PORT=%d \n", curr, inet_ntoa(mConnectAddr.sin_addr), ntohs(mConnectAddr.sin_port));
+
+	if (curr % 10 ==0)
+		printf_s("[DEBUG:%d] Session established: IP=%s, PORT=%d \n", curr, inet_ntoa(mConnectAddr.sin_addr), ntohs(mConnectAddr.sin_port));
 
 
 	Login();

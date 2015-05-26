@@ -8,7 +8,9 @@ continously generates a random feed for a given number of products
 broadcasts the feed to each session that is connected
 */
 
+#define DEPTH_MAX 30
 #define PRODUCT_COUNT_MAX 11
+#define FEED_THREAD_COUNT 1
 
 class ClientSession;
 
@@ -22,7 +24,7 @@ public:
 	void Start();
 	void Finalize();
 
-	static void PopulateFeedObject(OUT MyPacket::Feed& data);
+	//static void PopulateFeedObject(OUT MyPacket::Feed& data);
 
 	void SubscribeFeed(ClientSession* session);
 	void UnsubscribeFeed(ClientSession* session);
@@ -39,12 +41,12 @@ private:
 	c_iter end() const { return mSessionVector.end(); }
 
 
-	HANDLE mThreadHandle;
+	HANDLE mThreadHandle[FEED_THREAD_COUNT];
 
 	static bool mRunning;
 	static FastSpinlock mLock;
 
-	static FeedStruct* mRecentFeed[PRODUCT_COUNT_MAX];
+	static MyPacket::Feed* mRecentFeed[PRODUCT_COUNT_MAX];
 };
 
 extern FeedCenter* GFeedCenter;
