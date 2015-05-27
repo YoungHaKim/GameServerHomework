@@ -97,7 +97,7 @@ REGISTER_HANDLER(PKT_CS_LOGIN)
 
 	if (false == loginReq.ParseFromCodedStream(&payloadStream))
 	{
-		session->DisconnectRequest(DR_ACTIVE);  // why disconnect?
+		session->DisconnectRequest(DR_ACTIVE);  // why disconnect? --> 패킷 파싱에서 에러가 났다는 소리는?
 		return;
 	}
 
@@ -139,5 +139,7 @@ REGISTER_HANDLER(PKT_CS_ORDER)
 		session->DisconnectRequest(DR_ACTIVE);  // why disconnect?
 		return;
 	}
+
+	///# 이건 하다 말았네?
 
 }

@@ -47,6 +47,7 @@ private:
 
 	int mSessionCount = 0;
 
+	///# 아래 녀석들 static으로 한 이유가 뭘까나? C언어 인터페이스로 쓰는 경우 빼고는 없어보이는데...
 	static bool mRunning;
 	static FastSpinlock mLock;
 
